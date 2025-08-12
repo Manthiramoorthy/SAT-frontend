@@ -1,29 +1,37 @@
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import "bootstrap/dist/css/bootstrap.min.css"
 
 
 function ProductList() {
+    console.log("ProductList rendered");
+
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        fetch("https://fakestoreapi.com/products")
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            setProducts(data)
+        })
+    }, [])
+
+    
     return (
         <div className="row">
-            <ProductCard
-             title="Mobile"
-             description="Mobile - Description"
-             price="$23.34" />
-
-             <ProductCard
-             title="TV"
-             description="TV - Description"
-             price="$123.34" />
-
-             <ProductCard
-             title="Washing machine"
-             description="TV - Description"
-             price="$123.34" />
-
-             <ProductCard
-             title="Power bank"
-             description="TV - Description"
-             price="$123.34" />
+            {
+                products.map((product) =>{
+                    return(
+                        <ProductCard
+                            title={product.title}
+                            description={product.description}
+                            price={product.price}
+                            imageUri={product.image}
+                            />
+                    )
+                })
+            }
         </div>
     )
 }

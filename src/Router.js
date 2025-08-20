@@ -1,23 +1,33 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import AddCount from "./Addcount";
-import AddProduct from "./AddProduct";
+import AddProduct from "./product/AddProduct";
 import PageNotFound from "./PageNotFound";
+import Login from "./auth/Login";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 function Router() {
     console.log("Router rendered");
     return (
         <div>
-            <div>
-                <a href="/" className="btn btn-primary m-2">Home</a>
-                <a href="/addcount" className="btn btn-primary m-2">Add Count</a>
-                <a href="/addproduct" className="btn btn-primary m-2">Add Product</a>
-            </div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<App />} />
-                    <Route path="/addcount" element={<AddCount />} />
-                    <Route path="/addproduct" element={<AddProduct />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={
+                        <ProtectedRoute>
+                            <App />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/addcount" element={
+                        <ProtectedRoute>
+                            <AddCount />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/addproduct" element={
+                        <ProtectedRoute>
+                            <AddProduct />
+                        </ProtectedRoute>
+                    } />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>

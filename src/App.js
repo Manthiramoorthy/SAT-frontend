@@ -1,7 +1,6 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
-import ProductList from './ProductList';
-import AddCount from './Addcount';
+import ProductList from './product/ProductList';
 
 function App() {
   return (

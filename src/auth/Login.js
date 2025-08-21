@@ -27,7 +27,8 @@ function Login() {
                 const data = await response.json();
                 console.log("Login successful:", data);
                 localStorage.setItem("token", data.token);
-                alert("Login successful!");
+                localStorage.setItem("user", JSON.stringify(data.user));
+                window.location.href = "/";
             } else {
                 alert("Login failed. Please check your credentials.");
                 console.error("Login error:", response.statusText);
@@ -48,6 +49,8 @@ function Login() {
                 <input onChange={e => setUsername(e.target.value)} type="text" placeholder="Username" className="form-control mb-2" />
                 <input onChange={e => setPassword(e.target.value)} type="password" placeholder="Password" className="form-control mb-2" />
                 <button onClick={handleLogin} className="btn btn-primary">Login</button>
+
+                <a href="/register" className="btn btn-secondary ms-2">Register</a>
             </div>
         </div>
     );

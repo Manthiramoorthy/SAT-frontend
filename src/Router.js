@@ -5,6 +5,7 @@ import AddProduct from "./product/AddProduct";
 import PageNotFound from "./PageNotFound";
 import Login from "./auth/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import Register from "./auth/Register";
 
 function Router() {
     console.log("Router rendered");
@@ -13,6 +14,7 @@ function Router() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                     <Route path="/" element={
                         <ProtectedRoute>
                             <App />
@@ -24,7 +26,7 @@ function Router() {
                         </ProtectedRoute>
                     } />
                     <Route path="/addproduct" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute role={"admin"}>
                             <AddProduct />
                         </ProtectedRoute>
                     } />

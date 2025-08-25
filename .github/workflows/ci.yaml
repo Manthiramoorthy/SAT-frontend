@@ -1,8 +1,8 @@
-name: MERN CI
+name: e-commerce-frontend CI
 on:
   push:
   #   branches: [ main ]
-  # pull_request:
+  pull_request:
   #   branches: [ main ]
 
 jobs:

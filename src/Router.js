@@ -28,7 +28,8 @@ function Router() {
                     <Route path="/addproduct" element={
                         <ProtectedRoute role={"admin"}>
                             <AddProduct />
-                       
+                        </ProtectedRoute>
+                    } />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>

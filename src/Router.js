@@ -9,7 +9,7 @@ import Register from "./auth/Register";
 
 function Router() {
     console.log("Router rendered");
-    return (
+    
         <div>
             <BrowserRouter>
                 <Routes>

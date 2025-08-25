@@ -1,70 +1,138 @@
-# Getting Started with Create React App
+# E-Commerce Frontend (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Modern React frontend for an e‑commerce application with authentication, role‑based access control, and product management (list & add). Built with Create React App and React Router.
 
-## Available Scripts
+## ✨ Features
 
-In the project directory, you can run:
+- User registration & login (JWT stored in localStorage)
+- Protected routes (redirects unauthenticated users to login)
+- Role based authorization ("admin" required to access Add Product page)
+- Product listing (fetched from backend API)
+- Add new product (title, price, description)
+- Bootstrap 5 styling
+- Environment configurable backend URL via `.env`
 
-### `npm start`
+## 🗂️ Project Structure (key files)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+src/
+	Router.js               # Route definitions & protected routes
+	auth/
+		Login.js              # Handles authentication & token persistence
+		Register.js           # New user registration
+		ProtectedRoute.js     # Auth / role gating wrapper
+	product/
+		ProductList.js        # Fetch & render product cards
+		ProductCard.js        # Card UI component
+		AddProduct.js         # Admin-only product creation form
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧪 Tech Stack
 
-### `npm test`
+- React 19
+- React Router DOM 7
+- Bootstrap 5
+- Create React App tooling (react-scripts)
+- Testing Library / Jest setup scaffolded (tests can be added in `src/`)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🔧 Prerequisites
 
-### `npm run build`
+- Node.js >= 18
+- npm >= 9
+- Running backend that exposes endpoints:
+  - `POST /auth/login`
+  - `POST /auth/register`
+  - `GET /products`
+  - `POST /products` (auth required; admin role to access UI)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📦 Installation & Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file (or copy from provided example):
+   ```bash
+   copy .env.example .env   # Windows PowerShell: cp .env.example .env also works
+   ```
+4. Edit `.env` with your backend URL.
+5. Start the dev server:
+   ```bash
+   npm start
+   ```
+6. Open http://localhost:3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠 Environment Variables
 
-### `npm run eject`
+Create React App only exposes variables prefixed with `REACT_APP_`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Variable                | Description            | Example                 |
+| ----------------------- | ---------------------- | ----------------------- |
+| `REACT_APP_BACKEND_URL` | Base URL for API calls | `http://localhost:5000` |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`.env.example` is included to guide setup.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🔐 Authentication Flow
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. User logs in via `Login.js` (POST to `/auth/login`).
+2. On success: store `token` and `user` (JSON) in `localStorage`.
+3. `ProtectedRoute` checks for token (and role when provided) and either renders the child component or redirects.
 
-## Learn More
+## ➕ Adding a Product
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Navigate to `/addproduct` (only accessible if logged in AND user.role === `admin`).
+- Submits a POST `/products` with JSON body: `{ title, price, description }` and `Authorization: Bearer <token>` header.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🧭 Routing Summary
 
-### Code Splitting
+| Route         | Access        | Purpose                                                |
+| ------------- | ------------- | ------------------------------------------------------ |
+| `/login`      | Public        | User login                                             |
+| `/register`   | Public        | New account creation                                   |
+| `/`           | Authenticated | (Home) – likely shows product list via `App` component |
+| `/addcount`   | Authenticated | Demo/utility component (counter)                       |
+| `/addproduct` | Admin only    | Add new product                                        |
+| `*`           | Public        | 404 page                                               |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🧪 Testing
 
-### Analyzing the Bundle Size
+CRA testing setup is present. To run tests:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm test
+```
 
-### Making a Progressive Web App
+Add test files beside components using `*.test.js` naming.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🚀 Production Build
 
-### Advanced Configuration
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Outputs optimized assets into `build/` ready for static hosting (Netlify, Vercel, S3, etc.).
 
-### Deployment
+## 🐞 Troubleshooting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| Issue                    | Check                                                       |
+| ------------------------ | ----------------------------------------------------------- |
+| API calls fail           | Ensure `REACT_APP_BACKEND_URL` is correct & backend running |
+| Protected route redirect | Token missing/expired or role mismatch                      |
+| Env var not applied      | Restart dev server after editing `.env`                     |
 
-### `npm run build` fails to minify
+## 🗺️ Roadmap / Ideas
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Product images upload support
+- Edit / delete product (admin)
+- Pagination / search / filtering
+- Global state (Redux / Context) for auth & products
+- Improved form validation & error display
+
+## 📄 License
+
+Internal / educational project. Add a license file if distributing.
+
+---
+
+Feel free to extend or adjust this README as the project grows.

@@ -1,5 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navigate } from "react-router-dom";
 import { useState } from "react";
 
 function Login() {
